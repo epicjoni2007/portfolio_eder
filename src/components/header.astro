@@ -1,45 +1,90 @@
 ---
 ---
 <header>
-  <nav>
-    <h1>Mein Portfolio</h1>
+  <nav class="navbar">
+    <h1 class="logo">JE</h1>
     <ul>
-      <li><a href="#about">Über mich</a></li>
+      <li><a href="#about">&Uuml;ber mich</a></li>
       <li><a href="#projects">Projekte</a></li>
       <li><a href="#certificates">Zertifikate</a></li>
-      <li><a href="#contact">Kontakt</a></li>
+      <li><a href="#contact" class="cta-btn">Kontakt</a></li>
     </ul>
   </nav>
 </header>
 
 <style>
 header {
-  background: #222;
-  color: #fff;
+  background: rgba(10, 14, 39, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 
-nav {
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 ul {
   list-style: none;
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
+  align-items: center;
 }
 
 a {
-  color: #fff;
+  color: var(--text-secondary);
   text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+  position: relative;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--text-primary);
+  transition: width 0.3s ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--text-primary);
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+.cta-btn {
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--text-secondary);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary) !important;
+}
+
+.cta-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary) !important;
+}
+
+.cta-btn::after {
+  display: none;
 }
 </style>

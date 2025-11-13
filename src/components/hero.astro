@@ -2,35 +2,164 @@
 const profileImage = "/Images/profile.jpg";
 ---
 <section id="hero">
-  <div class="hero-content">
-    <img src={profileImage} alt="Profilbild" />
-    <h2>Hallo, ich bin Jonas Eder</h2>
-    <p>Ich bin Webentwickler / Designer / Freelancer.</p>
-    <a href="#projects" class="btn">Meine Projekte</a>
+  <div class="hero-container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h2 class="hero-title">Jonas Eder</h2>
+        <p class="hero-subtitle">Web Developer / Designer / Freelancer</p>
+        <p class="hero-description">Ich erstelle moderne, performante und benutzerfreundliche Webanwendungen</p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">Meine Projekte</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src={profileImage} alt="Jonas Eder" />
+        <div class="glow"></div>
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
 #hero {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: #f4f4f4;
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 2rem;
+  background: var(--bg-dark);
 }
-#hero img {
-  width: 150px;
-  border-radius: 50%;
+
+#hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: none;
+  pointer-events: none;
+}
+
+.hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.hero-text {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.hero-title {
+  font-size: 3.5rem;
   margin-bottom: 1rem;
+  color: var(--text-primary);
+  line-height: 1.1;
 }
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .btn {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.5rem 1.5rem;
-  background: #007BFF;
-  color: white;
-  border-radius: 5px;
+  padding: 0.9rem 2rem;
+  border-radius: 10px;
   text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+  display: inline-block;
+  border: 2px solid transparent;
 }
-.btn:hover {
-  background: #0056b3;
+
+.btn-primary {
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary {
+  border: 1px solid var(--text-secondary);
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.hero-image {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image img {
+  width: 280px;
+  height: 380px;
+  border-radius: 15px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.glow {
+  position: absolute;
+  width: 320px;
+  height: 420px;
+  border-radius: 15px;
+  background: transparent;
+  filter: blur(25px);
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-image img {
+    width: 240px;
+    height: 320px;
+  }
+
+  .glow {
+    width: 280px;
+    height: 360px;
+  }
 }
 </style>

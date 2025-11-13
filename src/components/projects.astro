@@ -1,34 +1,205 @@
+---
+interface GitHubRepo {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  language: string | null;
+  stargazers_count: number;
+  fork: boolean;
+  created_at: string;
+}
+
+let repos: GitHubRepo[] = [];
+let error = false;
+
+try {
+  const response = await fetch('https://api.github.com/users/epicjoni2007/repos?sort=updated&per_page=100');
+  const data = await response.json();
+  
+  if (Array.isArray(data)) {
+    repos = data
+      .filter((repo: GitHubRepo) => !repo.fork && !repo.private)
+      .sort((a: GitHubRepo, b: GitHubRepo) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 6);
+  }
+} catch (e) {
+  console.error('Error fetching repositories:', e);
+  error = true;
+}
+
+function getLanguageIcon(language: string | null): string {
+  const icons: { [key: string]: string } = {
+    'JavaScript': '',
+    'TypeScript': '',
+    'Python': '',
+    'React': '',
+    'Vue': '',
+    'Astro': '',
+    'CSS': '',
+    'HTML': '',
+    'Java': '',
+    'C#': '',
+  };
+  return icons[language || 'Other'] || '';
+}
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('de-DE', { year: 'numeric', month: 'short' });
+}
+---
+
 <section id="projects">
-  <h2>Projekte</h2>
-  <div class="projects-grid">
-    <div class="project-card">
-      <h3>Projekt 1</h3>
-      <p>Beschreibung des Projekts.</p>
-      <a href="#">Mehr erfahren</a>
-    </div>
-    <div class="project-card">
-      <h3>Projekt 2</h3>
-      <p>Beschreibung des Projekts.</p>
-      <a href="#">Mehr erfahren</a>
+  <div class="projects-container">
+    <h2>Meine Projekte</h2>
+    {error && (
+      <p style="text-align: center; color: var(--text-secondary); margin: 2rem 0;">
+        Projekte konnten nicht geladen werden. Bitte versuchen Sie es später erneut.
+      </p>
+    )}
+    {repos.length === 0 && !error && (
+      <p style="text-align: center; color: var(--text-secondary); margin: 2rem 0;">
+        Keine Projekte gefunden.
+      </p>
+    )}
+    <div class="projects-grid">
+      {repos.map((repo: GitHubRepo) => (
+        <a href={repo.html_url} target="_blank" rel="noopener noreferrer" class="project-card">
+          <div class="project-header">
+            <div class="project-tags">
+              {repo.language && <span>{repo.language}</span>}
+              {repo.stargazers_count > 0 && <span>{repo.stargazers_count}</span>}
+            </div>
+          </div>
+          <h3>{repo.name}</h3>
+          <p>{repo.description || 'Keine Beschreibung vorhanden'}</p>
+          <div class="project-meta">
+            <span>{formatDate(repo.created_at)}</span>
+          </div>
+          <div class="project-link">
+            Repository ansehen
+          </div>
+        </a>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
+#projects {
+  padding: 6rem 2rem;
+  background: var(--bg-dark);
+}
+
+.projects-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  padding: 0 2rem;
 }
+
 .project-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-.project-card a {
-  color: #007BFF;
+  padding: 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
   text-decoration: none;
+  color: inherit;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover {
+  border-color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-10px);
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.project-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.project-tags span {
+  padding: 0.3rem 0.8rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.project-card h3 {
+  margin-bottom: 0.8rem;
+  color: var(--text-primary);
+}
+
+.project-card p {
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.project-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.project-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.project-link:hover {
+  color: var(--text-primary);
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

@@ -7,30 +7,194 @@ const files = fs.readdirSync(dir).filter(f => f.endsWith(".pdf"));
 ---
 
 <section id="certificates">
-  <h2>Zertifikate</h2>
-  <div class="certificates-grid">
-    {files.map(file => (
-      <iframe src={`/Zertifikate/${file}`} title={file} loading="lazy"></iframe>
-    ))}
+  <div class="certificates-container">
+    <h2>Zertifikate</h2>
+    <p class="section-subtitle">Meine Qualifikationen und Zertifizierungen</p>
+    <div class="certificates-grid">
+      {files.map((file, index) => (
+        <div class="certificate-item">
+          <div class="certificate-preview" onclick={`document.getElementById('modal-${index}').showModal()`}>
+            <iframe src={`/Zertifikate/${file}`} title={file} loading="lazy"></iframe>
+          </div>
+          <p class="cert-name">{file.replace('.pdf', '')}</p>
+          <a href={`/Zertifikate/${file}`} download class="cert-download">
+            Herunterladen ↓
+          </a>
+        </div>
+        
+        <dialog id={`modal-${index}`} class="modal">
+          <div class="modal-content">
+            <button class="modal-close" onclick={`document.getElementById('modal-${index}').close()`}>✕</button>
+            <iframe src={`/Zertifikate/${file}`} title={file}></iframe>
+          </div>
+        </dialog>
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
 #certificates {
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-color);
+}
+
+.certificates-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.certificate-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.certificate-item:hover {
+  border-color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-8px);
+}
+
+.certificate-preview {
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.certificate-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+.cert-name {
+  padding: 1rem 1.5rem 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin: 0;
+  flex-grow: 1;
+  word-break: break-word;
+}
+
+.cert-download {
+  padding: 0.8rem 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: var(--transition);
+  border: 1px solid var(--border-color);
+  margin: 1rem 1.5rem 1.5rem;
   text-align: center;
 }
-.certificates-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
+
+.cert-download:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--text-secondary);
 }
-.certificates-grid iframe {
-  width: 200px;
-  height: 250px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  height: 90vh;
+  max-width: 900px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+}
+
+.modal-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: var(--transition);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .certificates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-preview {
+    height: 300px;
+  }
+
+  .modal-content {
+    width: 95%;
+    height: 95vh;
+  }
 }
 </style>
