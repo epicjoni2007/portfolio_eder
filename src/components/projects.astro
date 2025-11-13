@@ -1,0 +1,34 @@
+<section id="projects">
+  <h2>Projekte</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <h3>Projekt 1</h3>
+      <p>Beschreibung des Projekts.</p>
+      <a href="#">Mehr erfahren</a>
+    </div>
+    <div class="project-card">
+      <h3>Projekt 2</h3>
+      <p>Beschreibung des Projekts.</p>
+      <a href="#">Mehr erfahren</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 0 2rem;
+}
+.project-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.project-card a {
+  color: #007BFF;
+  text-decoration: none;
+}
+</style>

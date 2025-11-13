@@ -1,0 +1,36 @@
+---
+import fs from "fs";
+import path from "path";
+
+const dir = path.resolve("./public/Zertifikate");
+const files = fs.readdirSync(dir).filter(f => f.endsWith(".pdf"));
+---
+
+<section id="certificates">
+  <h2>Zertifikate</h2>
+  <div class="certificates-grid">
+    {files.map(file => (
+      <iframe src={`/Zertifikate/${file}`} title={file} loading="lazy"></iframe>
+    ))}
+  </div>
+</section>
+
+<style>
+#certificates {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.certificates-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.certificates-grid iframe {
+  width: 200px;
+  height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+</style>

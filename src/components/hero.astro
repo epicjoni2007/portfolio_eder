@@ -1,0 +1,36 @@
+---
+const profileImage = "/Images/profile.jpg";
+---
+<section id="hero">
+  <div class="hero-content">
+    <img src={profileImage} alt="Profilbild" />
+    <h2>Hallo, ich bin Jonas Eder</h2>
+    <p>Ich bin Webentwickler / Designer / Freelancer.</p>
+    <a href="#projects" class="btn">Meine Projekte</a>
+  </div>
+</section>
+
+<style>
+#hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f4f4f4;
+}
+#hero img {
+  width: 150px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  background: #007BFF;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.btn:hover {
+  background: #0056b3;
+}
+</style>
