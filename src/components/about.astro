@@ -4,19 +4,50 @@
     <div class="about-content">
       <div class="about-text">
         <p>Hallo! Ich bin Jonas, ein leidenschaftlicher Web Developer und Designer aus &Ouml;sterreich. Mit &uuml;ber 3 Jahren Erfahrung in der Web-Entwicklung helfe ich Unternehmen, ihre digitalen Ziele zu erreichen.</p>
-        <div class="skills">
-          <h3>Skills</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">HTML/CSS</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">C#</span>
-            <span class="skill-tag">C</span>
-            <span class="skill-tag">Unreal Engine 5</span>
-            <span class="skill-tag">UI Design</span>
-            <span class="skill-tag">Git</span>
+      </div>
+      
+      <div class="skills">
+        <h3>Skills</h3>
+        <div class="skill-grid">
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/html5.svg" alt="HTML/CSS" title="HTML/CSS" />
+            <span>HTML/CSS</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/javascript.svg" alt="JavaScript" title="JavaScript" />
+            <span>JavaScript</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/react.svg" alt="React" title="React" />
+            <span>React</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/typescript.svg" alt="TypeScript" title="TypeScript" />
+            <span>TypeScript</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openjdk.svg" alt="Java" title="Java" />
+            <span>Java</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/dotnet.svg" alt="C#" title="C#" />
+            <span>C#</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/c.svg" alt="C" title="C" />
+            <span>C</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/unrealengine.svg" alt="Unreal Engine 5" title="Unreal Engine 5" />
+            <span>Unreal Engine 5</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/figma.svg" alt="UI Design" title="UI Design" />
+            <span>UI Design</span>
+          </div>
+          <div class="skill-item">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/git.svg" alt="Git" title="Git" />
+            <span>Git</span>
           </div>
         </div>
       </div>
@@ -45,38 +76,61 @@
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 .skills {
-  margin-top: 2rem;
+  margin-top: 3rem;
+  text-align: center;
 }
 
 .skills h3 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   color: var(--text-primary);
+  font-size: 1.5rem;
 }
 
-.skill-tags {
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  justify-items: center;
+}
+
+.skill-item {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   gap: 0.8rem;
+  transition: var(--transition);
 }
 
-.skill-tag {
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+.skill-item img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  opacity: 0.8;
+  transition: var(--transition);
+  filter: invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
+}
+
+.skill-item:hover img {
+  opacity: 1;
+  transform: translateY(-4px);
+  filter: invert(1) drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
+}
+
+.skill-item span {
   font-size: 0.9rem;
+  color: var(--text-secondary);
   font-weight: 500;
   transition: var(--transition);
 }
 
-.skill-tag:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--text-secondary);
-  transform: translateY(-2px);
+.skill-item:hover span {
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {
