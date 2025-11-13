@@ -1,4 +1,6 @@
 ---
+import { getCachedRepos, isCacheExpired, saveCachedRepos, clearCache } from '../lib/cache';
+
 interface GitHubRepo {
   id: number;
   name: string;
@@ -12,20 +14,85 @@ interface GitHubRepo {
 
 let repos: GitHubRepo[] = [];
 let error = false;
+let errorMessage: string | null = null;
+
+// Check if we have a refresh parameter in the URL
+const url = new URL(Astro.request.url);
+const shouldRefresh = url.searchParams.has('refresh');
 
 try {
-  const response = await fetch('https://api.github.com/users/epicjoni2007/repos?sort=updated&per_page=100');
-  const data = await response.json();
+  let cachedRepos = getCachedRepos();
+  const cacheExpired = isCacheExpired();
   
-  if (Array.isArray(data)) {
-    repos = data
-      .filter((repo: GitHubRepo) => !repo.fork && !repo.private)
-      .sort((a: GitHubRepo, b: GitHubRepo) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      .slice(0, 6);
+  // Use cache if available and not expired, unless refresh is requested
+  if (cachedRepos && !cacheExpired && !shouldRefresh) {
+    console.log('[Cache] Using cached GitHub repos');
+    repos = cachedRepos.slice(0, 6);
+  } else {
+    // Fetch from GitHub API
+    console.log('[API] Fetching fresh repos from GitHub');
+    const fetchUrl = 'https://api.github.com/users/epicjoni2007/repos?sort=updated&per_page=100';
+    
+    const headers: HeadersInit = {
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'epicjoni-portfolio'
+    };
+    
+    // Add GitHub token if available (increases rate limit from 60 to 5000/hour)
+    const token = process.env.GITHUB_TOKEN;
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+      console.log('[API] GitHub token is configured');
+    } else {
+      console.log('[API] No GitHub token found (60 requests/hour limit)');
+    }
+    
+    const response = await fetch(fetchUrl, { headers });
+
+    if (!response.ok) {
+      const body = await response.text();
+      console.error('GitHub API error', response.status, body);
+      error = true;
+      try {
+        const parsed = JSON.parse(body);
+        errorMessage = parsed.message || `GitHub API returned ${response.status}`;
+      } catch (_e) {
+        errorMessage = `GitHub API returned ${response.status}`;
+      }
+      
+      // Fall back to old cache even if expired
+      if (cachedRepos) {
+        console.log('[Cache] API failed, using stale cache as fallback');
+        repos = cachedRepos.slice(0, 6);
+        error = false;
+      }
+    } else {
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const filtered = data
+          .filter((repo: GitHubRepo) => !repo.fork && !(repo as any).private)
+          .sort((a: GitHubRepo, b: GitHubRepo) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        
+        repos = filtered.slice(0, 6);
+        
+        // Save to cache
+        saveCachedRepos(filtered);
+        console.log('[Cache] Saved fresh repos to cache');
+      }
+    }
   }
 } catch (e) {
   console.error('Error fetching repositories:', e);
   error = true;
+  errorMessage = (e && (e as any).message) || String(e);
+  
+  // Try to use stale cache as fallback
+  const cachedRepos = getCachedRepos();
+  if (cachedRepos) {
+    console.log('[Cache] Error occurred, using stale cache as fallback');
+    repos = cachedRepos.slice(0, 6);
+    error = false;
+  }
 }
 
 function getLanguageIcon(language: string | null): string {
@@ -55,7 +122,7 @@ function formatDate(dateString: string): string {
     <h2>Meine Projekte</h2>
     {error && (
       <p style="text-align: center; color: var(--text-secondary); margin: 2rem 0;">
-        Projekte konnten nicht geladen werden. Bitte versuchen Sie es später erneut.
+        Projekte konnten nicht geladen werden. {errorMessage ? `(Grund: ${errorMessage})` : ''} Bitte versuchen Sie es später erneut. <a href="?refresh=true" style="color: var(--text-secondary); text-decoration: underline;">Jetzt erneut laden</a>
       </p>
     )}
     {repos.length === 0 && !error && (

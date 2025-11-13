@@ -1,0 +1,180 @@
+<section id="timeline">
+  <div class="timeline-container">
+    <h2>Werdegang</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3>Volkschule Maishofen</h3>
+          <p class="timeline-date">2013 - 2017</p>
+          <p>Abschluss der Volkschule in Maishofen.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3>Gymnasium Zell am See</h3>
+          <p class="timeline-date">2017 - 2021</p>
+          <p>Abschluss des Gymnasiums mit allgemeiner Hochschulreife.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3>H&ouml;here Technische Lehranstalt Saalfelden (HTL)</h3>
+          <p class="timeline-date">2021 - Heute</p>
+          <p>Ausbildung an der HTL St. Johann im Pongau mit Schwerpunkt auf Web-Entwicklung und Softwareentwicklung.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3>Praktikum - Senoplast</h3>
+          <p class="timeline-date">2022</p>
+          <p>Unterst&uuml;tzung bei der Entwicklung von Webanwendungen mit SAP UI5. Mitarbeit an UI-Anpassungen und Datenanbindungen.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3>Praktikum - Senoplast</h3>
+          <p class="timeline-date">2023 - 2024</p>
+          <p>Arbeit an der Entwicklung moderner Webanwendungen mit dem SAP UI5 Framework. Erstellung und Anpassung von Benutzeroberfl&auml;chen, Anbindung an Datenbanken mittels SQL sowie Umsetzung interaktiver Funktionen zur Verbesserung der Benutzerfreundlichkeit.</p>
+        </div>
+      </div>
+
+      <!-- Hobbys moved to separate component -->
+    </div>
+  </div>
+</section>
+
+<style>
+#timeline {
+  padding: 6rem 2rem;
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.timeline-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.timeline {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%;
+  background: var(--border-color);
+}
+
+.timeline-item {
+  margin-bottom: 3rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+  grid-column: 1 / 2;
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+  grid-column: 3 / 4;
+}
+
+.timeline-marker {
+  width: 16px;
+  height: 16px;
+  background: var(--text-primary);
+  border: 3px solid var(--bg-dark);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  z-index: 10;
+  transition: var(--transition);
+}
+
+.timeline-item:hover .timeline-marker {
+  width: 24px;
+  height: 24px;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.timeline-content {
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  transition: var(--transition);
+}
+
+.timeline-content:hover {
+  border-color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-5px);
+}
+
+.timeline-content h3 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.timeline-date {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.timeline-content p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* hobby tag styles moved to hobbies.astro */
+
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 20px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 40px 1fr;
+    gap: 0;
+    padding-left: 2rem;
+  }
+
+  .timeline-item:nth-child(even) .timeline-content,
+  .timeline-item:nth-child(odd) .timeline-content {
+    grid-column: 2 / 3;
+  }
+
+  .timeline-marker {
+    left: 20px;
+    transform: translateX(-50%);
+  }
+
+  .timeline-item:hover .timeline-marker {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+</style>
